@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+
+<body>
+    {% block content %}
+
+        <div class="container">
+        
+
+{% if current_user.is_authenticated %}          <!-- Profile Section -->
+<div class="profile-card">
+  <div class="profile-header">
+    <img
+      src="{{ url_for('static', filename='pfp.jpg') }}"
+      alt="User profile"
+      class="profile-img"
+    />
+  </div>
+
+  <div class="profile-body">
+    <h2 class="profile-name">{{ current_user.username }}</h2>
+    <p class="profile-username"> {{ current_user.email }} </p>
+    <p class="profile-bio">
+      Full‑stack developer and tech enthusiast. Loves Python, JS, and anime.
+    </p>
+  </div>
+</div>
+{% endif %}
+
+
+
+
+
+
+
+        <div class="posts">
+            {% for post in posts %}
+            <div class="post_content">
+
+                <h3 class="author_date">{{ post.author.username }} |<span class="date">{{ post.date }}</span>
+                    {% if post.author == current_user %}
+                        <span>
+                            <div id="dropdown" class="dropdown">
+                                <button class="dropbtn"><img src="static/dots-removebg-preview.png" alt="image" width="20px" height="20px"   ></button>
+                                <div class="dropdown-content">
+                                    <a href="/update/{{ post.id }}">Update</a>
+                                    <a href="/delete/{{ post.id }}">Delete</a>
+                                </div>
+                            </div>
+                        </span>
+                    {% endif %}
+                </h3>
+                </h3>
+                <h2 class="post_title"><a href="/get_full_blog/{{ post.id }}"> {{ post.title }} </a> </h2>
+                <p class="description">{{ post.content }}</p>
+
+            </div>
+            {% endfor %}
+
+
+        </div>
+    </div>
+    {% endblock %}
+
+    
+
+</body>

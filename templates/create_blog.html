@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+<body>
+{% block content%}
+    <form class="blog-form" action="/create_blog" method="POST">
+        {{ form.hidden_tag() }}
+        <div class="form-title">Create New Blog</div>
+
+        {{ form.title.label }}
+        {{ form.title }}
+
+        {{ form.content.label }}
+        {{ form.content }}
+
+        {{ form.submit(class="blog-form-button") }}
+    </form>
+{% endblock %}
+</body>
+
+

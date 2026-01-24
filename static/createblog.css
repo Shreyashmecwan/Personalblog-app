@@ -1,0 +1,99 @@
+/* Form container */
+.blog-form {
+    max-width: 700px;
+    margin: 50px auto;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 12px;
+    /* green accent for create */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+
+
+/* Form title */
+.form-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 25px;
+}
+
+/* Label */
+.blog-form label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 6px;
+}
+
+/* Inputs & textarea */
+.blog-form input,
+.blog-form textarea {
+    width: 95%;
+    padding: 12px 14px;
+    margin-bottom: 18px;
+    font-size: 15px;
+    border-radius: 8px;
+    border: 1.5px solid #d1d5db;
+    outline: none;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* Focus effect */
+.blog-form input:focus,
+.blog-form textarea:focus {
+    border-color: #22c55e;
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
+}
+
+/* Textarea resize */
+.blog-form textarea {
+    min-height: 160px;
+    resize: vertical;
+}
+
+/* Submit button */
+.blog-form button {
+    background:  linear-gradient(135deg, #1f2933, #374151);
+    color: #ffffff;
+    border: none;
+    padding: 12px 22px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.25s ease, transform 0.2s ease;
+    
+}
+.blog-form-button{
+    background:  linear-gradient(135deg, #1f2933, #374151);
+    color: #ffffff;
+    border: none;
+    padding: 12px 22px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.25s ease, transform 0.2s ease;
+    width: 50%;
+}
+
+/* Button hover */
+.blog-form button:hover {
+    background: #16a34a;
+   
+}
+.blog-form-button:hover{
+    background: #16a34a
+}
+
+/* Button click */
+.blog-form button:active {
+    transform: scale(0.96);
+}
+.blog-form-button:active{
+    transform: scale(0.96);
+}

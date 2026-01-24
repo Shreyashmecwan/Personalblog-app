@@ -1,0 +1,288 @@
+.navbar {
+    background: linear-gradient(135deg, #1f2933, #374151);
+    height: 70px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* NAV LINKS */
+.navbar a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+
+    padding: 8px 14px;
+    border-radius: 6px;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.navbar .a {
+    color: #ffffff;
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+
+    padding: 8px 14px;
+    border-radius: 6px;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+/* HOVER EFFECT */
+.navbar a:hover {
+    background: rgba(255, 255, 255, 0.12);
+    transform: translateY(-2px);
+}
+
+/* ACTIVE LINK (OPTIONAL) */
+.navbar a.active {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.post_content{
+    width: 800px;
+    margin: 40px auto;
+    padding: 20px 25px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    /* transition: transform 0.3s ease,box-shadow 0.3s ease; */
+    
+}
+
+
+.author_date{
+    font-size: 14px;
+    color: #6b7280;
+    height: 5px;
+    
+}
+
+.post_title{
+    font-size: 25px;
+    font-weight: 700;
+    padding-bottom: 5px;
+    border-bottom: 2px solid #6b7280;
+}
+    
+.post_title a{
+    color: #111827; 
+    text-decoration: none;
+}
+
+
+
+.description{
+    font-size: 16px;
+    line-height: 1.7;
+    color: #374151;
+    display: -webkit-box;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.5em;
+    max-height: 4.5em;
+}
+
+.date{
+    position: relative;
+    left: 4px;
+    
+    font-size: small;
+}
+
+/* FOOTER */
+.footer {
+    background: linear-gradient(135deg, #1f2933, #374151);
+    color: #d1d5db;
+
+    text-align: center;
+    padding: 18px 10px;
+    margin-top: 40px;
+
+    font-size: 0.9rem;
+    letter-spacing: 0.4px;
+
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.15);
+}
+
+.dropbtn {
+  
+  color: white;
+  padding: 0;
+  margin-left: 550px;
+  background-color: transparent;
+  border: none;
+ 
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  /* display: inline-block; */
+  left: 250px;
+  bottom: 30px;
+  width: 0;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  margin-left: 400px;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+
+.dropdown-content a:hover {background-color: #ddd;}
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {display: block;}
+
+.alert-success {
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+  color: #155724;
+}
+.alert-danger {
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+  color: #721c24;
+}
+.alert {
+    text-align: center;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: 0.375rem;
+}
+
+
+
+
+
+/* FOOTER TEXT */
+.footer p {
+    margin: 0;
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+    .footer {
+        font-size: 0.85rem;
+        padding: 15px 8px;
+    }
+}
+
+
+
+
+
+/* Profile Card Container */
+.profile-card {
+  width: 260px;                 /* adjust for your sidebar width */
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  border: 1px solid #e5e5e5;
+  position: relative;
+  right: 60px;
+  bottom: 170px;
+}
+
+/* Top banner area */
+.profile-header {
+      background: linear-gradient(135deg, #1f2933, #374151);
+  padding: 24px 16px 48px; /* extra bottom padding for image overlap */
+  position: relative;
+}
+
+/* Circle image */
+.profile-img {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  border: 3px solid #ffffff;
+  object-fit: cover;
+  position: absolute;
+  left: 50%;
+  bottom: -48px;
+  transform: translateX(-50%);
+}
+
+/* Body area */
+.profile-body {
+  padding: 56px 16px 16px; /* top padding accounts for overlapped image */
+  text-align: center;
+}
+
+.profile-name {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.profile-username {
+  margin: 4px 0 8px;
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+.profile-bio {
+  font-size: 0.9rem;
+  color: #4b5563;
+  margin: 8px 0 16px;
+}
+
+/* Stats row */
+.profile-stats {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding: 0 8px;
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat-number {
+  display: block;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #111827;
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+

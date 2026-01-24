@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="blog-wrapper">
+    {% if post %}
+        <article class="blog-post">
+            <h1> {{ post.title }} <span>{{ post.date }}</span> 
+            </h1>
+            <p>{{ post.content }}</p>
+             {% if post.author == current_user %}
+                <a href="/update/{{ post.id }}" class="action-btn update-btn">Update</a>
+                <a href="/delete/{{ post.id }}" class="action-btn delete-btn">Delete</a>               
+            {% endif %}
+        </article>
+    {% endif %}
+</div>
+{% endblock %}
+

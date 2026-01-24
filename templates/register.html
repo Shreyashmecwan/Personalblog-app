@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+<body>
+{% block content%}
+    <form class="blog-form" method="POST">
+        <div class="form-title">Registeration Form</div>
+            <label for="name">Name</label>
+            <input type="text" id="title" name="name" required>
+
+            <label for="email">email</label>
+            <input type = "text" id="content" name="email" required>
+
+            <label for="password">Password</label>
+            <input type = "text" id="content" name="password" required>
+
+            <button type="submit">Register</button>
+            <a href="{{ url_for('login') }}">already have account ?</a>
+    </form>
+{% endblock %}
+</body>
+
+
