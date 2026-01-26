@@ -34,6 +34,15 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(100), nullable=False)
 
     posts = db.relationship('Post', backref='author', lazy=True)
+    profile = db.relationship('UserProfile', backref='user', uselist=False)
+
+class UserProfile(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(100), nullable=False)
+    bio = db.Column(db.Text, nullable=True)
+    number = db.Column(db.Integer, nullable=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 with app.app_context():
     db.create_all()
@@ -52,8 +61,11 @@ def load_user(user_id):
 @app.route('/')
 def home():
     posts = Post.query.all()
-    
-    return render_template('home.html' , posts=posts)
+    if current_user.is_authenticated:
+        userprofile = UserProfile.query.filter_by(user_id=current_user.id).first()
+    else:
+        userprofile = None
+    return render_template('home.html' , posts=posts , userprofile=userprofile)
 
 @app.route('/create_blog' , methods=[ 'GET', 'POST'])
 @login_required
@@ -128,6 +140,23 @@ def login():
             flash('Login Unsuccessful. Please check email and password', 'danger')
     return render_template('login.html')
 
+@app.route('/profile', methods=['GET', 'POST'])
+def profile():
+    user_profile = UserProfile.query.filter_by(user_id=current_user.id).first()
+    if request.method == 'POST':
+        name = request.form.get('name')
+        email = request.form['email']
+        bio = request.form['bio']
+        if user_profile:
+            user_profile.name = name
+            user_profile.email = email
+            user_profile.bio = bio
+        else:
+            user_profile = UserProfile(name=name, email=email, bio=bio, user_id=current_user.id)
+            db.session.add(user_profile)
+        db.session.commit()
+        return redirect(url_for('home'))
+    return render_template('profile.html', profile=user_profile)
 
 @app.route('/logout')
 @login_required

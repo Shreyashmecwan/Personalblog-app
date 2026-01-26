@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='createblog.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='showblog.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='profile_section.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
     <title>Home Page</title>
 </head>
 <body>
@@ -16,6 +17,7 @@
         <div><a href="{{ url_for('create_blog') }}">Create Blog</a></div>
         {% if current_user.is_authenticated %}
             <p class="a" >Welcome, {{ current_user.username }}</p>
+            <div><a href="{{ url_for('profile') }}">Profile</a></div>
             <div><a href="{{ url_for('logout') }}">Logout</a></div>
         {% else %}
             <div><a href="{{ url_for('register') }}">Login/Register</a></div>

@@ -6,7 +6,7 @@
 
         <div class="container">
 <div>
-            {% if current_user.is_authenticated %}   
+            {% if current_user.is_authenticated and userprofile%}   
                  <!-- Profile Section -->
 <div class="profile-card">
   <div class="profile-header">
@@ -18,10 +18,10 @@
   </div>
 
   <div class="profile-body">
-    <h2 class="profile-name">{{ current_user.username }}</h2>
-    <p class="profile-username"> {{ current_user.email }} </p>
+    <h2 class="profile-name">{{ userprofile.name }}</h2>
+    <p class="profile-username"> {{ userprofile.email }} </p>
     <p class="profile-bio">
-      Full‑stack developer and tech enthusiast. Loves Python, JS, and anime.
+        {{ userprofile.bio }}
       
     </p>
   </div>
