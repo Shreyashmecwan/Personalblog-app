@@ -46,9 +46,9 @@
 }
 
 .container{
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    padding: 5px;
 }
 
 .post_content{
@@ -59,6 +59,7 @@
     border-radius: 10px;
     box-shadow: 0 8px 20px rgba(0,0,0,0.08);
     /* transition: transform 0.3s ease,box-shadow 0.3s ease; */
+   
     
 }
 
@@ -200,9 +201,11 @@
 
 
 
+
 /* Profile Card Container */
 .profile-card {
-  width: 260px;                 /* adjust for your sidebar width */
+  width: 260px;  
+  /* height: 255px;                */
   background: #ffffff;
   border-radius: 12px;
   overflow: hidden;
@@ -211,7 +214,9 @@
     sans-serif;
   border: 1px solid #e5e5e5;
   position: relative;
-  right: 60px;
+  left: 20px;
+  top: 17px;
+
   bottom: 170px;
 }
 

@@ -5,9 +5,9 @@
     {% block content %}
 
         <div class="container">
-        
-
-{% if current_user.is_authenticated %}          <!-- Profile Section -->
+<div>
+            {% if current_user.is_authenticated %}   
+                 <!-- Profile Section -->
 <div class="profile-card">
   <div class="profile-header">
     <img
@@ -22,17 +22,15 @@
     <p class="profile-username"> {{ current_user.email }} </p>
     <p class="profile-bio">
       Full‑stack developer and tech enthusiast. Loves Python, JS, and anime.
+      
     </p>
   </div>
 </div>
 {% endif %}
+</div>
 
-
-
-
-
-
-
+<div>
+        
         <div class="posts">
             {% for post in posts %}
             <div class="post_content">
@@ -60,6 +58,8 @@
 
         </div>
     </div>
+    </div>
+    
     {% endblock %}
 
     
