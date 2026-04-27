@@ -1,0 +1,161 @@
+ .profile-form {
+        background: #fff;
+        padding: 20px 25px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        width: 100%;
+        max-width: 400px;
+    }
+    .profile-form h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+    }
+    .form-group {
+        margin-bottom: 15px;
+    }
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+    input, textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 14px;
+    }
+    input[type="file"] {
+        padding: 5px;
+    }
+    button {
+        width: 100%;
+        padding: 10px;
+        background: #007BFF;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    button:hover {
+        background: #0056b3;
+    }
+
+    .profile-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+/* ============================================
+   RESPONSIVE MEDIA QUERIES
+   ============================================ */
+
+/* ===== MOBILE (< 480px) ===== */
+@media (max-width: 479px) {
+    .profile-form {
+        padding: 18px 15px;
+        max-width: 100%;
+        margin: 15px 10px;
+    }
+
+    .profile-form h2 {
+        font-size: 18px;
+        margin-bottom: 18px;
+    }
+
+    .form-group {
+        margin-bottom: 13px;
+    }
+
+    label {
+        font-size: 13px;
+        margin-bottom: 4px;
+    }
+
+    input,
+    textarea {
+        width: 100%;
+        padding: 8px;
+        font-size: 13px;
+    }
+
+    input[type="file"] {
+        padding: 4px;
+    }
+
+    button {
+        width: 100%;
+        padding: 9px;
+        font-size: 14px;
+    }
+
+    .profile-container {
+        flex-direction: column;
+        padding: 10px;
+    }
+}
+
+/* ===== TABLET (480px - 768px) ===== */
+@media (min-width: 480px) and (max-width: 768px) {
+    .profile-form {
+        padding: 20px 20px;
+        max-width: 90%;
+        margin: 20px auto;
+    }
+
+    .profile-form h2 {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 14px;
+    }
+
+    label {
+        font-size: 13.5px;
+        margin-bottom: 5px;
+    }
+
+    input,
+    textarea {
+        width: 100%;
+        padding: 9px;
+        font-size: 14px;
+    }
+
+    input[type="file"] {
+        padding: 5px;
+    }
+
+    button {
+        width: 100%;
+        padding: 10px;
+        font-size: 15px;
+    }
+
+    .profile-container {
+        flex-direction: row;
+        padding: 15px;
+        gap: 15px;
+    }
+}
+
+/* ===== DESKTOP (> 768px) ===== */
+@media (min-width: 769px) {
+    .profile-form {
+        max-width: 400px;
+    }
+
+    button {
+        width: 100%;
+    }
+
+    .profile-container {
+        flex-direction: row;
+        gap: 30px;
+    }
+}

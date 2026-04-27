@@ -13,14 +13,14 @@
 </head>
 <body>
      <header class="navbar">
-        <div><a href="{{ url_for('home') }}">Home</a></div>
-        <div><a href="{{ url_for('create_blog') }}">Create Blog</a></div>
+        <div><a href="{{ url_for('main.home') }}">Home</a></div>
+        <div><a href="{{ url_for('blog.create_blog') }}">Create Blog</a></div>
         {% if current_user.is_authenticated %}
             <p class="a" >Welcome, {{ current_user.username }}</p>
-            <div><a href="{{ url_for('profile') }}">Profile</a></div>
-            <div><a href="{{ url_for('logout') }}">Logout</a></div>
+            <div><a href="{{ url_for('main.profile') }}">Profile</a></div>
+            <div><a href="{{ url_for('auth.logout') }}">Logout</a></div>
         {% else %}
-            <div><a href="{{ url_for('register') }}">Login/Register</a></div>
+            <div><a href="{{ url_for('auth.register') }}">Login/Register</a></div>
         {% endif %}
     
     </header>

@@ -7,8 +7,8 @@
             </h1>
             <p>{{ post.content }}</p>
              {% if post.author == current_user %}
-                <a href="/update/{{ post.id }}" class="action-btn update-btn">Update</a>
-                <a href="/delete/{{ post.id }}" class="action-btn delete-btn">Delete</a>               
+                <a href="{{ url_for('blog.update', post_id=post.id) }}" class="action-btn update-btn">Update</a>
+                <a href="{{ url_for('blog.delete', post_id=post.id) }}" class="action-btn delete-btn">Delete</a>               
             {% endif %}
         </article>
     {% endif %}

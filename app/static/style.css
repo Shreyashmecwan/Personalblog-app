@@ -189,11 +189,175 @@
     margin: 0;
 }
 
-/* MOBILE */
-@media (max-width: 600px) {
+/* ============================================
+   RESPONSIVE MEDIA QUERIES
+   ============================================ */
+
+/* ===== MOBILE (< 480px) ===== */
+@media (max-width: 479px) {
+    /* Navbar */
+    .navbar {
+        height: auto;
+        flex-direction: column;
+        gap: 10px;
+        padding: 12px 0;
+    }
+
+    .navbar a,
+    .navbar .a {
+        font-size: 0.9rem;
+        padding: 6px 10px;
+    }
+
+    /* Posts */
+    .container {
+        grid-template-columns: 1fr;
+        padding: 10px;
+    }
+
+    .post_content {
+        width: 100% !important;
+        margin: 15px auto;
+        padding: 15px;
+    }
+
+    .post_title {
+        font-size: 18px;
+    }
+
+    .description {
+        font-size: 14px;
+    }
+
+    /* Dropdown menu */
+    .dropdown {
+        left: 0 !important;
+        width: auto;
+        bottom: 0 !important;
+    }
+
+    .dropbtn {
+        margin-left: 0 !important;
+    }
+
+    .dropdown-content {
+        margin-left: 0 !important;
+        position: fixed;
+        right: 10px;
+    }
+
+    /* Profile card */
+    .profile-card {
+        width: 100%;
+        max-width: 280px;
+        margin: 20px auto;
+        position: static;
+        left: 0 !important;
+        top: 0 !important;
+        bottom: 0 !important;
+    }
+
+    /* Footer */
     .footer {
-        font-size: 0.85rem;
-        padding: 15px 8px;
+        font-size: 0.8rem;
+        padding: 12px 8px;
+    }
+}
+
+/* ===== TABLET (480px - 768px) ===== */
+@media (min-width: 480px) and (max-width: 768px) {
+    /* Navbar */
+    .navbar {
+        height: 80px;
+        gap: 20px;
+        flex-wrap: wrap;
+        padding: 8px 0;
+    }
+
+    .navbar a,
+    .navbar .a {
+        font-size: 0.95rem;
+        padding: 7px 12px;
+    }
+
+    /* Posts grid */
+    .container {
+        grid-template-columns: 1fr 1fr;
+        padding: 15px;
+        gap: 15px;
+    }
+
+    .post_content {
+        width: 100% !important;
+        margin: 10px 0 !important;
+        padding: 18px;
+    }
+
+    .post_title {
+        font-size: 20px;
+    }
+
+    .description {
+        font-size: 15px;
+    }
+
+    /* Dropdown */
+    .dropdown {
+        left: 50% !important;
+        margin-left: -80px;
+    }
+
+    .dropbtn {
+        margin-left: 0 !important;
+    }
+
+    .dropdown-content {
+        margin-left: 0 !important;
+        min-width: 130px;
+    }
+
+    /* Profile card */
+    .profile-card {
+        width: 100%;
+        max-width: 300px;
+        margin: 20px auto 30px;
+        position: static;
+        left: 0 !important;
+        top: 0 !important;
+        bottom: 0 !important;
+    }
+
+    .profile-stats {
+        padding: 0 12px;
+    }
+
+    /* Footer */
+    .footer {
+        font-size: 0.9rem;
+        padding: 16px 10px;
+    }
+}
+
+/* ===== DESKTOP (> 768px) ===== */
+@media (min-width: 769px) {
+    .navbar {
+        height: 70px;
+        gap: 40px;
+    }
+
+    .post_content {
+        width: 800px;
+    }
+
+    .container {
+        grid-template-columns: auto auto auto;
+    }
+
+    .profile-card {
+        position: relative;
+        left: 20px;
+        top: 17px;
+        bottom: 170px;
     }
 }
 

@@ -97,3 +97,100 @@
 .blog-form-button:active{
     transform: scale(0.96);
 }
+
+/* ============================================
+   RESPONSIVE MEDIA QUERIES
+   ============================================ */
+
+/* ===== MOBILE (< 480px) ===== */
+@media (max-width: 479px) {
+    .blog-form {
+        max-width: 100%;
+        margin: 20px 10px;
+        padding: 20px;
+    }
+
+    .form-title {
+        font-size: 20px;
+        margin-bottom: 18px;
+    }
+
+    .blog-form label {
+        font-size: 13px;
+        margin-bottom: 5px;
+    }
+
+    .blog-form input,
+    .blog-form textarea {
+        width: 100%;
+        padding: 10px 12px;
+        margin-bottom: 15px;
+        font-size: 14px;
+    }
+
+    .blog-form textarea {
+        min-height: 140px;
+    }
+
+    .blog-form button,
+    .blog-form-button {
+        width: 100%;
+        padding: 10px 16px;
+        font-size: 15px;
+    }
+}
+
+/* ===== TABLET (480px - 768px) ===== */
+@media (min-width: 480px) and (max-width: 768px) {
+    .blog-form {
+        max-width: 90%;
+        margin: 35px auto;
+        padding: 25px;
+    }
+
+    .form-title {
+        font-size: 23px;
+        margin-bottom: 22px;
+    }
+
+    .blog-form label {
+        font-size: 13.5px;
+        margin-bottom: 6px;
+    }
+
+    .blog-form input,
+    .blog-form textarea {
+        width: 100%;
+        padding: 11px 13px;
+        margin-bottom: 16px;
+        font-size: 14.5px;
+    }
+
+    .blog-form textarea {
+        min-height: 150px;
+    }
+
+    .blog-form button,
+    .blog-form-button {
+        width: 70%;
+        padding: 11px 20px;
+        font-size: 15.5px;
+    }
+}
+
+/* ===== DESKTOP (> 768px) ===== */
+@media (min-width: 769px) {
+    .blog-form {
+        max-width: 700px;
+    }
+
+    .blog-form input,
+    .blog-form textarea {
+        width: 95%;
+    }
+
+    .blog-form button,
+    .blog-form-button {
+        width: 50%;
+    }
+}
