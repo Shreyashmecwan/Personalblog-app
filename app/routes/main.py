@@ -13,9 +13,10 @@ main_bp = Blueprint('main', __name__)
 @main_bp.route('/home')
 def home():
     """
-    Display home page with all blog posts
+    Display home page with paginated blog posts (5 per page, latest first)
     """
-    posts = Post.query.all()
+    page = request.args.get('page', 1, type=int)
+    posts = Post.query.order_by(Post.id.desc()).paginate(page=page, per_page=5)
     userprofile = None
     
     if current_user.is_authenticated:

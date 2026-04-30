@@ -32,7 +32,7 @@
 <div>
         
         <div class="posts">
-            {% for post in posts %}
+            {% for post in posts.items %}
             <div class="post_content">
 
                 <h3 class="author_date">{{ post.author.username }} |<span class="date">{{ post.date }}</span>
@@ -51,17 +51,33 @@
                 </h3>
                 <h2 class="post_title"><a href="{{ url_for('blog.get_full_blog', post_id=post.id) }}"> {{ post.title }} </a> </h2>
                 <p class="description">{{ post.content }}</p>
+                
+               
 
             </div>
             {% endfor %}
 
+        </div>
 
+        <!-- Pagination Section -->
+        <div class="pagination-container">
+            {% if posts.has_prev %}
+                <a href="{{ url_for('main.home', page=posts.prev_num) }}" class="pagination-btn prev-btn">← Previous</a>
+            {% endif %}
+
+            <div class="page-info">
+                Page {{ posts.page }} of {{ posts.pages }}
+            </div>
+
+            {% if posts.has_next %}
+                <a href="{{ url_for('main.home', page=posts.next_num) }}" class="pagination-btn next-btn">Next →</a>
+            {% endif %}
         </div>
     </div>
     </div>
     
     {% endblock %}
 
-    
+   
 
 </body>
