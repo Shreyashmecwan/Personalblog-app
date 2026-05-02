@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 
-
 <body>
     {% block content %}
 
@@ -52,7 +51,25 @@
                 <h2 class="post_title"><a href="{{ url_for('blog.get_full_blog', post_id=post.id) }}"> {{ post.title }} </a> </h2>
                 <p class="description">{{ post.content }}</p>
                 
-               
+                <!-- Reactions Section -->
+                <div class="home-reactions" data-post-id="{{ post.id }}">
+                    <form method="POST" action="{{ url_for('utils.toggle_like', post_id=post.id) }}" style="display:inline;">
+                        <button type="submit" class="home-reaction-btn like-btn-home" data-post-id="{{ post.id }}">
+                            <span>👍</span>
+                            <span class="reaction-count">{{ post.likes|selectattr('is_like', 'equalto', True)|list|length }}</span>
+                        </button>
+                    </form>
+                    <form method="POST" action="{{ url_for('utils.toggle_dislike', post_id=post.id) }}" style="display:inline;">
+                        <button type="submit" class="home-reaction-btn dislike-btn-home" data-post-id="{{ post.id }}">
+                            <span>👎</span>
+                            <span class="reaction-count">{{ post.likes|selectattr('is_like', 'equalto', False)|list|length }}</span>
+                        </button>
+                    </form>
+                    <a href="{{ url_for('blog.get_full_blog', post_id=post.id) }}" class="home-comment-link">
+                        <span>💬</span>
+                        <span class="comment-count">{{ post.comments|length }}</span>
+                    </a>
+                </div>
 
             </div>
             {% endfor %}
@@ -78,6 +95,5 @@
     
     {% endblock %}
 
-   
-
 </body>
+

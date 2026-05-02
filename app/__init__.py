@@ -53,9 +53,11 @@ def create_app(config_name='development'):
     from app.routes.main import main_bp
     from app.routes.auth import auth_bp
     from app.routes.blog import blog_bp
+    from app.routes.utils import utils_bp
     
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(blog_bp)
+    app.register_blueprint(utils_bp)
     
     return app

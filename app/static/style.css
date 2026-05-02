@@ -633,5 +633,68 @@
     }
 }
 
+/* ============================================
+   HOME PAGE REACTIONS (Like/Dislike/Comments)
+   ============================================ */
 
+.home-reactions {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid #e5e7eb;
+}
+
+.home-reaction-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background-color: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #6b7280;
+    transition: all 0.3s ease;
+}
+
+.home-reaction-btn:hover {
+    background-color: #f9fafb;
+    border-color: #d1d5db;
+}
+
+.home-reaction-btn:active,
+.home-reaction-btn.active {
+    background-color: #ff9500;
+    color: white;
+    border-color: #ff9500;
+}
+
+.home-comment-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background-color: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #6b7280;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.home-comment-link:hover {
+    background-color: #f9fafb;
+    border-color: #d1d5db;
+}
+
+.reaction-count,
+.comment-count {
+    font-weight: 600;
+}
 
