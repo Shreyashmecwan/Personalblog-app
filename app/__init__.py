@@ -1,11 +1,13 @@
 """
-Application factory and extension initialization
+Application Factory and Extension Initialization
+
+Initializes Flask extensions and creates the application instance.
 """
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
-from config import config
+from config import DevelopmentConfig
 
 # Initialize extensions
 db = SQLAlchemy()
@@ -13,12 +15,11 @@ bcrypt = Bcrypt()
 login_manager = LoginManager()
 
 
-def create_app(config_name='development'):
+def create_app():
     """
-    Application factory function
+    Create and configure Flask application instance.
     
-    Args:
-        config_name (str): Configuration name (development, testing, production)
+    Development configuration is used for the development environment.
     
     Returns:
         Flask: Configured Flask application instance
@@ -26,17 +27,17 @@ def create_app(config_name='development'):
     app = Flask(__name__)
     
     # Load configuration
-    app.config.from_object(config[config_name])
+    app.config.from_object(DevelopmentConfig)
     
     # Initialize extensions with app
     db.init_app(app)
     bcrypt.init_app(app)
     login_manager.init_app(app)
     
-    # Setup login manager
+    # Configure login manager
     login_manager.login_view = 'auth.login'
-    login_manager.login_message_category = 'info'
     login_manager.login_message = 'Please log in to access this page.'
+    login_manager.login_message_category = 'info'
     
     # Register user loader
     from app.models import User
@@ -50,14 +51,14 @@ def create_app(config_name='development'):
         db.create_all()
     
     # Register blueprints
-    from app.routes.main import main_bp
     from app.routes.auth import auth_bp
     from app.routes.blog import blog_bp
-    from app.routes.utils import utils_bp
+    from app.routes.main import main_bp
+    from app.routes.reaction import reaction_bp
     
-    app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(blog_bp)
-    app.register_blueprint(utils_bp)
+    app.register_blueprint(main_bp)
+    app.register_blueprint(reaction_bp)
     
     return app

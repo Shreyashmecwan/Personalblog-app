@@ -1,46 +1,43 @@
 """
-Configuration settings for the Flask application
+Development Configuration for Personal Blog Application
+
+This configuration is designed for development purposes only.
 """
 import os
+from pathlib import Path
+
+# Get the base directory
+BASE_DIR = Path(__file__).parent
+
+# Load environment variables
 from dotenv import load_dotenv
-
-load_dotenv()
-
-class Config:
-    """Base configuration"""
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev-secret-key-change-in-production'
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///blog.db'
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SESSION_COOKIE_SECURE = True
-    SESSION_COOKIE_HTTPONLY = True
-    REMEMBER_COOKIE_SECURE = True
-    REMEMBER_COOKIE_HTTPONLY = True
+load_dotenv(BASE_DIR / '.env')
 
 
-class DevelopmentConfig(Config):
+class DevelopmentConfig:
     """Development configuration"""
+    # Flask settings
     DEBUG = True
     TESTING = False
+    
+    # Secret key for session management
+    SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev-secret-key-change-when-deploying'
+    
+    # Database configuration
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or f'sqlite:///{BASE_DIR / "instance" / "dev_blog.db"}'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_ECHO = False
+    
+    # Session security (relaxed for development)
     SESSION_COOKIE_SECURE = False
+    SESSION_COOKIE_HTTPONLY = True
+    SESSION_COOKIE_SAMESITE = 'Lax'
+    
+    # Remember me cookie (relaxed for development)
+    REMEMBER_COOKIE_SECURE = False
+    REMEMBER_COOKIE_HTTPONLY = True
+    REMEMBER_COOKIE_DURATION = 604800  # 7 days
 
 
-class TestingConfig(Config):
-    """Testing configuration"""
-    DEBUG = True
-    TESTING = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
-    WTF_CSRF_ENABLED = False
-
-
-class ProductionConfig(Config):
-    """Production configuration"""
-    DEBUG = False
-    TESTING = False
-
-
-config = {
-    'development': DevelopmentConfig,
-    'testing': TestingConfig,
-    'production': ProductionConfig,
-    'default': DevelopmentConfig
-}
+# Set the active configuration
+config = DevelopmentConfig

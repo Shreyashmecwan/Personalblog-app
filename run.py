@@ -1,25 +1,28 @@
 """
-Application entry point
-Run this file to start the Flask development server
+Personal Blog Application Entry Point
 
-Usage:
+Run this file to start the Flask development server:
     python run.py
+
+The application will be available at http://localhost:5000
 """
-import os
 from app import create_app, db
 
-# Create app instance
-app = create_app(os.environ.get('FLASK_ENV', 'development'))
+# Create Flask application instance
+app = create_app()
 
 
 @app.shell_context_processor
 def make_shell_context():
-    """Make database models available in flask shell"""
+    """Make models available in flask shell"""
+    from app.models import User, Post, UserProfile, PostComment, PostReaction
     return {
         'db': db,
-        'User': __import__('app.models', fromlist=['User']).User,
-        'Post': __import__('app.models', fromlist=['Post']).Post,
-        'UserProfile': __import__('app.models', fromlist=['UserProfile']).UserProfile,
+        'User': User,
+        'Post': Post,
+        'UserProfile': UserProfile,
+        'PostComment': PostComment,
+        'PostReaction': PostReaction,
     }
 
 

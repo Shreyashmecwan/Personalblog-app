@@ -1,23 +1,25 @@
 """
-Utility routes for comments and reactions (likes/dislikes)
+Routes for user interactions with blog posts.
+
+Includes:
+- Comment management (add, delete)
+- Reaction management (likes/dislikes on posts)
 """
 from flask import Blueprint, request, jsonify, redirect, url_for, flash
 from flask_login import current_user, login_required
-from datetime import date
+from datetime import datetime
 from app import db
-from app.models import Post, Comment, Like
+from app.models import Post, PostComment, PostReaction
 
-utils_bp = Blueprint('utils', __name__)
+reaction_bp = Blueprint('reaction', __name__)
 
 
 # ======================== COMMENT ROUTES ========================
 
-@utils_bp.route('/add_comment/<int:post_id>', methods=['POST'])
+@reaction_bp.route('/add_comment/<int:post_id>', methods=['POST'])
 @login_required
 def add_comment(post_id):
-    """
-    Add a comment to a blog post
-    """
+    """Add a comment to a blog post"""
     post = Post.query.get_or_404(post_id)
     
     content = request.form.get('comment_content', '').strip()
@@ -27,9 +29,8 @@ def add_comment(post_id):
         return redirect(url_for('blog.get_full_blog', post_id=post_id))
     
     try:
-        new_comment = Comment(
+        new_comment = PostComment(
             content=content,
-            date=date.today().strftime("%d-%m-%Y"),
             user_id=current_user.id,
             post_id=post_id
         )
@@ -44,16 +45,14 @@ def add_comment(post_id):
     return redirect(url_for('blog.get_full_blog', post_id=post_id))
 
 
-@utils_bp.route('/delete_comment/<int:comment_id>/<int:post_id>', methods=['GET'])
+@reaction_bp.route('/delete_comment/<int:comment_id>/<int:post_id>', methods=['GET'])
 @login_required
 def delete_comment(comment_id, post_id):
-    """
-    Delete a comment (only by the comment author or post author)
-    """
-    comment = Comment.query.get_or_404(comment_id)
+    """Delete a comment (by comment author or post author only)"""
+    comment = PostComment.query.get_or_404(comment_id)
     post = Post.query.get_or_404(post_id)
     
-    # Check authorization - allow comment author or post author to delete
+    # Check authorization
     if comment.author != current_user and post.author != current_user:
         flash('You do not have permission to delete this comment.', 'danger')
         return redirect(url_for('blog.get_full_blog', post_id=post_id))
@@ -69,112 +68,93 @@ def delete_comment(comment_id, post_id):
     return redirect(url_for('blog.get_full_blog', post_id=post_id))
 
 
-# ======================== LIKE/DISLIKE ROUTES ========================
+# ======================== REACTION ROUTES (LIKE/DISLIKE) ========================
 
-@utils_bp.route('/toggle_like/<int:post_id>', methods=['POST'])
+@reaction_bp.route('/toggle_like/<int:post_id>', methods=['POST'])
 @login_required
 def toggle_like(post_id):
-    """
-    Toggle like for a blog post
-    """
+    """Toggle like reaction on a blog post"""
     post = Post.query.get_or_404(post_id)
     
-    # Check if user already has a reaction
-    existing_like = Like.query.filter_by(
+    existing_reaction = PostReaction.query.filter_by(
         user_id=current_user.id,
         post_id=post_id
     ).first()
     
     try:
-        if existing_like:
-            # If user already liked, remove the like
-            if existing_like.is_like:
-                db.session.delete(existing_like)
-                db.session.commit()
+        if existing_reaction:
+            if existing_reaction.is_like:
+                # Remove like if already liked
+                db.session.delete(existing_reaction)
             else:
-                # If user disliked, change to like
-                existing_like.is_like = True
-                existing_like.date = date.today().strftime("%d-%m-%Y")
-                db.session.commit()
+                # Change dislike to like
+                existing_reaction.is_like = True
+                existing_reaction.created_at = datetime.utcnow()
         else:
             # Add new like
-            new_like = Like(
+            new_reaction = PostReaction(
                 is_like=True,
                 user_id=current_user.id,
-                post_id=post_id,
-                date=date.today().strftime("%d-%m-%Y")
+                post_id=post_id
             )
-            db.session.add(new_like)
-            db.session.commit()
+            db.session.add(new_reaction)
+        
+        db.session.commit()
     except Exception as e:
         db.session.rollback()
         flash('An error occurred while processing your like.', 'danger')
     
-    # Redirect back to the referring page or home
     return redirect(request.referrer or url_for('main.home'))
 
 
-@utils_bp.route('/toggle_dislike/<int:post_id>', methods=['POST'])
+@reaction_bp.route('/toggle_dislike/<int:post_id>', methods=['POST'])
 @login_required
 def toggle_dislike(post_id):
-    """
-    Toggle dislike for a blog post
-    """
+    """Toggle dislike reaction on a blog post"""
     post = Post.query.get_or_404(post_id)
     
-    # Check if user already has a reaction
-    existing_like = Like.query.filter_by(
+    existing_reaction = PostReaction.query.filter_by(
         user_id=current_user.id,
         post_id=post_id
     ).first()
     
     try:
-        if existing_like:
-            # If user already disliked, remove the dislike
-            if not existing_like.is_like:
-                db.session.delete(existing_like)
-                db.session.commit()
+        if existing_reaction:
+            if not existing_reaction.is_like:
+                # Remove dislike if already disliked
+                db.session.delete(existing_reaction)
             else:
-                # If user liked, change to dislike
-                existing_like.is_like = False
-                existing_like.date = date.today().strftime("%d-%m-%Y")
-                db.session.commit()
+                # Change like to dislike
+                existing_reaction.is_like = False
+                existing_reaction.created_at = datetime.utcnow()
         else:
             # Add new dislike
-            new_dislike = Like(
+            new_reaction = PostReaction(
                 is_like=False,
                 user_id=current_user.id,
-                post_id=post_id,
-                date=date.today().strftime("%d-%m-%Y")
+                post_id=post_id
             )
-            db.session.add(new_dislike)
-            db.session.commit()
+            db.session.add(new_reaction)
+        
+        db.session.commit()
     except Exception as e:
         db.session.rollback()
         flash('An error occurred while processing your dislike.', 'danger')
     
-    # Redirect back to the referring page or home
     return redirect(request.referrer or url_for('main.home'))
 
 
-@utils_bp.route('/get_reactions/<int:post_id>', methods=['GET'])
+@reaction_bp.route('/get_reactions/<int:post_id>', methods=['GET'])
 def get_reactions(post_id):
-    """
-    Get like and dislike counts for a post, and user's current reaction
-    """
+    """Get reaction counts and user's current reaction for a post"""
     post = Post.query.get_or_404(post_id)
     
-    like_count = len([l for l in post.likes if l.is_like])
-    dislike_count = len([l for l in post.likes if not l.is_like])
+    like_count = post.get_like_count()
+    dislike_count = post.get_dislike_count()
     
     user_reaction = None
     if current_user.is_authenticated:
-        user_like = Like.query.filter_by(
-            user_id=current_user.id,
-            post_id=post_id
-        ).first()
-        if user_like:
-            user_reaction = 'like' if user_like.is_like else 'dislike'
+        user_reaction = post.get_user_reaction(current_user.id)
     
     return jsonify({
         'like_count': like_count,

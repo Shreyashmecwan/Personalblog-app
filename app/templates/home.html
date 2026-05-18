@@ -53,13 +53,13 @@
                 
                 <!-- Reactions Section -->
                 <div class="home-reactions" data-post-id="{{ post.id }}">
-                    <form method="POST" action="{{ url_for('utils.toggle_like', post_id=post.id) }}" style="display:inline;">
+                    <form method="POST" action="{{ url_for('reaction.toggle_like', post_id=post.id) }}" style="display:inline;">
                         <button type="submit" class="home-reaction-btn like-btn-home" data-post-id="{{ post.id }}">
                             <span>👍</span>
                             <span class="reaction-count">{{ post.likes|selectattr('is_like', 'equalto', True)|list|length }}</span>
                         </button>
                     </form>
-                    <form method="POST" action="{{ url_for('utils.toggle_dislike', post_id=post.id) }}" style="display:inline;">
+                    <form method="POST" action="{{ url_for('reaction.toggle_dislike', post_id=post.id) }}" style="display:inline;">
                         <button type="submit" class="home-reaction-btn dislike-btn-home" data-post-id="{{ post.id }}">
                             <span>👎</span>
                             <span class="reaction-count">{{ post.likes|selectattr('is_like', 'equalto', False)|list|length }}</span>

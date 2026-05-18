@@ -18,14 +18,14 @@
         <!-- Like/Dislike Section -->
         <div class="reactions-section">
             <div class="reaction-buttons">
-                <form method="POST" action="{{ url_for('utils.toggle_like', post_id=post.id) }}" style="display:inline;">
+                <form method="POST" action="{{ url_for('reaction.toggle_like', post_id=post.id) }}" style="display:inline;">
                     <button type="submit" class="reaction-btn like-btn">
                         <span class="reaction-icon">👍</span>
                         <span class="reaction-count">{{ post.likes|selectattr('is_like', 'equalto', True)|list|length }}</span>
                         Like
                     </button>
                 </form>
-                <form method="POST" action="{{ url_for('utils.toggle_dislike', post_id=post.id) }}" style="display:inline;">
+                <form method="POST" action="{{ url_for('reaction.toggle_dislike', post_id=post.id) }}" style="display:inline;">
                     <button type="submit" class="reaction-btn dislike-btn">
                         <span class="reaction-icon">👎</span>
                         <span class="reaction-count">{{ post.likes|selectattr('is_like', 'equalto', False)|list|length }}</span>
@@ -42,7 +42,7 @@
             <!-- Add Comment Form -->
             {% if current_user.is_authenticated %}
                 <div class="add-comment-form">
-                    <form method="POST" action="{{ url_for('utils.add_comment', post_id=post.id) }}">
+                    <form method="POST" action="{{ url_for('reaction.add_comment', post_id=post.id) }}">
                         <textarea name="comment_content" class="comment-input" placeholder="Write your comment here..." required></textarea>
                         <button type="submit" class="submit-comment-btn">Post Comment</button>
                     </form>
@@ -64,7 +64,7 @@
                             
                             {% if comment.author == current_user or post.author == current_user %}
                                 <div class="comment-actions">
-                                    <a href="{{ url_for('utils.delete_comment', comment_id=comment.id, post_id=post.id) }}" class="delete-comment-btn">Delete</a>
+                                    <a href="{{ url_for('reaction.delete_comment', comment_id=comment.id, post_id=post.id) }}" class="delete-comment-btn">Delete</a>
                                 </div>
                             {% endif %}
                         </div>

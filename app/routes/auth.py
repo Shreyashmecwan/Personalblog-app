@@ -1,5 +1,5 @@
 """
-Authentication routes (login, register, logout)
+Authentication routes for user registration, login, and logout.
 """
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, current_user, login_required
@@ -11,35 +11,38 @@ auth_bp = Blueprint('auth', __name__)
 
 @auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
-    """
-    User registration route
-    """
+    """Register a new user account"""
     if current_user.is_authenticated:
         return redirect(url_for('main.home'))
     
     if request.method == 'POST':
         username = request.form.get('name', '').strip()
         email = request.form.get('email', '').strip()
-        password = request.form.get('password', '')
+        password = request.form.get('password', '').strip()
         
         # Validation
         if not username or not email or not password:
             flash('All fields are required.', 'danger')
             return redirect(url_for('auth.register'))
         
-        # Check if user already exists
+        # Check if email already exists
         if User.query.filter_by(email=email).first():
             flash('Email already registered. Please login.', 'danger')
             return redirect(url_for('auth.register'))
         
+        # Check if username already exists
         if User.query.filter_by(username=username).first():
             flash('Username already taken. Please choose another.', 'danger')
             return redirect(url_for('auth.register'))
         
         # Create new user
         try:
-            hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
-            new_user = User(username=username, email=email, password=hashed_password)
+            password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
+            new_user = User(
+                username=username,
+                email=email,
+                password_hash=password_hash
+            )
             db.session.add(new_user)
             db.session.commit()
             
@@ -54,15 +57,13 @@ def register():
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
-    """
-    User login route
-    """
+    """Log in a user"""
     if current_user.is_authenticated:
         return redirect(url_for('main.home'))
     
     if request.method == 'POST':
         email = request.form.get('email', '').strip()
-        password = request.form.get('password', '')
+        password = request.form.get('password', '').strip()
         
         if not email or not password:
             flash('Email and password are required.', 'danger')
@@ -70,12 +71,12 @@ def login():
         
         user = User.query.filter_by(email=email).first()
         
-        if user and bcrypt.check_password_hash(user.password, password):
+        if user and bcrypt.check_password_hash(user.password_hash, password):
             login_user(user, remember=True)
             flash(f'Welcome back, {user.username}!', 'success')
             return redirect(url_for('main.home'))
         else:
-            flash('Login unsuccessful. Please check email and password.', 'danger')
+            flash('Login unsuccessful. Please check your email and password.', 'danger')
     
     return render_template('login.html')
 
@@ -83,9 +84,7 @@ def login():
 @auth_bp.route('/logout')
 @login_required
 def logout():
-    """
-    User logout route
-    """
+    """Log out the current user"""
     logout_user()
     flash('You have been logged out.', 'info')
     return redirect(url_for('main.home'))
