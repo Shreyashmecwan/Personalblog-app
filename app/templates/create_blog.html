@@ -1,20 +1,43 @@
 {% extends "base.html" %}
 
-<body>
-{% block content%}
-    <form class="blog-form" action="/create_blog" method="POST">
-        {{ form.hidden_tag() }}
-        <div class="form-title">Create New Blog</div>
+{% block title %}Create Blog - Personal Blog{% endblock %}
 
-        {{ form.title.label }}
-        {{ form.title }}
+{% block content %}
+<div class="create-blog-container">
+    <div class="create-blog-form">
+        <h1 style="margin-bottom: 2rem;">✍️ Create New Blog Post</h1>
+        
+        <form method="POST" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            
+            <div class="form-group">
+                {{ form.title.label }}
+                {{ form.title(placeholder="Enter an engaging title...") }}
+            </div>
 
-        {{ form.content.label }}
-        {{ form.content }}
+            <div class="form-group">
+                {{ form.category.label }}
+                {{ form.category(placeholder="e.g., Technology, Travel, Food...") }}
+            </div>
 
-        {{ form.submit(class="blog-form-button") }}
-    </form>
+            <div class="form-group">
+                {{ form.content.label }}
+                {{ form.content(placeholder="Write your blog content here...") }}
+            </div>
+
+            <div class="form-group">
+                {{ form.image.label }}
+                {{ form.image }}
+                <small style="color: var(--text-light);">Supported formats: JPG, JPEG, PNG, GIF</small>
+            </div>
+
+            <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                {{ form.submit(class="btn btn-primary", value="Publish Post", style="flex: 1;") }}
+                <a href="{{ url_for('main.home') }}" class="btn btn-secondary" style="flex: 1; text-align: center;">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock %}
-</body>
 
 

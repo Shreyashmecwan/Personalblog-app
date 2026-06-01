@@ -1,35 +1,67 @@
 {% extends "base.html" %}
+
+{% block title %}{{ post.title }} - Personal Blog{% endblock %}
+
 {% block content %}
-<div class="blog-wrapper">
+<div class="blog-detail-container">
     {% if post %}
-        <article class="blog-post">
-            <h1> {{ post.title }} <span>{{ post.date }}</span> 
-            </h1>
-            <p>{{ post.content }}</p>
-            
-            {% if post.author == current_user %}
-                <div class="action-buttons">
-                    <a href="{{ url_for('blog.update', post_id=post.id) }}" class="action-btn update-btn">Update</a>
-                    <a href="{{ url_for('blog.delete', post_id=post.id) }}" class="action-btn delete-btn">Delete</a>
-                </div>               
+        <article class="blog-detail-header">
+            <!-- Blog Image -->
+            {% if post.image_filename %}
+                <img src="{{ url_for('static', filename='uploads/' + post.image_filename) }}" alt="{{ post.title }}" class="blog-detail-image">
+            {% else %}
+                <img src="{{ url_for('static', filename='default_img.jpg') }}" alt="{{ post.title }}" class="blog-detail-image">
             {% endif %}
+
+            <!-- Blog Title and Meta -->
+            <div style="display: flex; justify-content: space-between; align-items: start; gap: 1rem;">
+                <div>
+                    <h1 style="margin: 1rem 0 0.5rem 0;">{{ post.title }}</h1>
+                    <div class="blog-detail-meta">
+                        <span>
+                            <strong>By:</strong> {{ post.author.username }}
+                        </span>
+                        <span>
+                            <strong>Published:</strong> {{ post.created_at.strftime('%B %d, %Y') }}
+                        </span>
+                        <span>
+                            <strong>Category:</strong> <span class="category-tag">{{ post.category }}</span>
+                        </span>
+                    </div>
+                </div>
+                {% if post.author == current_user %}
+                <div class="post-menu">
+                    <button class="menu-btn">⋮</button>
+                    <div class="menu-dropdown">
+                        <a href="{{ url_for('blog.update', post_id=post.id) }}" class="menu-item">✏️ Edit</a>
+                        <a href="{{ url_for('blog.delete', post_id=post.id) }}" class="menu-item delete">🗑️ Delete</a>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
         </article>
 
-        <!-- Like/Dislike Section -->
-        <div class="reactions-section">
-            <div class="reaction-buttons">
+        <!-- Blog Content -->
+        <div class="blog-detail-body">
+            {{ post.content }}
+        </div>
+
+        <!-- Reactions Section -->
+        <div class="blog-detail-header" style="padding: 1.5rem;">
+            <h3 style="margin-bottom: 1rem;">Reactions</h3>
+            <div class="blog-card-actions">
                 <form method="POST" action="{{ url_for('reaction.toggle_like', post_id=post.id) }}" style="display:inline;">
-                    <button type="submit" class="reaction-btn like-btn">
-                        <span class="reaction-icon">👍</span>
-                        <span class="reaction-count">{{ post.likes|selectattr('is_like', 'equalto', True)|list|length }}</span>
-                        Like
+                    <button type="submit" class="action-btn like-btn">
+                        <span>👍</span>
+                        <span class="action-count">{{ post.get_like_count() }}</span>
+                        <span>Like</span>
                     </button>
                 </form>
                 <form method="POST" action="{{ url_for('reaction.toggle_dislike', post_id=post.id) }}" style="display:inline;">
-                    <button type="submit" class="reaction-btn dislike-btn">
-                        <span class="reaction-icon">👎</span>
-                        <span class="reaction-count">{{ post.likes|selectattr('is_like', 'equalto', False)|list|length }}</span>
-                        Dislike
+                    <button type="submit" class="action-btn dislike-btn">
+                        <span>👎</span>
+                        <span class="action-count">{{ post.get_dislike_count() }}</span>
+                        <span>Dislike</span>
                     </button>
                 </form>
             </div>
@@ -37,43 +69,52 @@
 
         <!-- Comments Section -->
         <div class="comments-section">
-            <h3>Comments</h3>
-            
+            <h3 class="comments-title">💬 Comments ({{ post.comments|length }})</h3>
+
             <!-- Add Comment Form -->
             {% if current_user.is_authenticated %}
-                <div class="add-comment-form">
-                    <form method="POST" action="{{ url_for('reaction.add_comment', post_id=post.id) }}">
-                        <textarea name="comment_content" class="comment-input" placeholder="Write your comment here..." required></textarea>
-                        <button type="submit" class="submit-comment-btn">Post Comment</button>
-                    </form>
-                </div>
+            <div class="comment-form">
+                <form method="POST" action="{{ url_for('reaction.add_comment', post_id=post.id) }}">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <textarea name="comment_content" placeholder="Share your thoughts..." style="min-height: 100px;" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="margin-top: 1rem;">Post Comment</button>
+                </form>
+            </div>
             {% else %}
-                <p class="login-prompt"><a href="{{ url_for('auth.login') }}">Log in</a> to add a comment.</p>
+            <div class="alert alert-info" style="margin-bottom: 1.5rem;">
+                <span><a href="{{ url_for('auth.login') }}">Log in</a> to add a comment.</span>
+            </div>
             {% endif %}
-            
+
             <!-- Comments List -->
             {% if post.comments %}
-                <div class="comments-list">
-                    {% for comment in post.comments|reverse %}
-                        <div class="comment-item">
-                            <div class="comment-header">
-                                <strong>{{ comment.author.username }}</strong>
-                                <span class="comment-date">{{ comment.date }}</span>
-                            </div>
-                            <p class="comment-content">{{ comment.content }}</p>
-                            
-                            {% if comment.author == current_user or post.author == current_user %}
-                                <div class="comment-actions">
-                                    <a href="{{ url_for('reaction.delete_comment', comment_id=comment.id, post_id=post.id) }}" class="delete-comment-btn">Delete</a>
-                                </div>
-                            {% endif %}
-                        </div>
-                    {% endfor %}
+            <div class="comment-list">
+                {% for comment in post.comments|reverse %}
+                <div class="comment-item">
+                    <div class="comment-author">{{ comment.author.username }}</div>
+                    <div class="comment-date">{{ comment.created_at.strftime('%B %d, %Y at %I:%M %p') }}</div>
+                    <div class="comment-content">{{ comment.content }}</div>
+
+                    {% if comment.author == current_user or post.author == current_user %}
+                    <div style="margin-top: 0.75rem;">
+                        <a href="{{ url_for('reaction.delete_comment', comment_id=comment.id, post_id=post.id) }}" class="btn btn-danger" style="font-size: 0.85rem; padding: 0.5rem 0.75rem;">Delete</a>
+                    </div>
+                    {% endif %}
                 </div>
+                {% endfor %}
+            </div>
             {% else %}
-                <p class="no-comments">No comments yet. Be the first to comment!</p>
+            <div class="empty-state">
+                <p>📝 No comments yet. Be the first to share your thoughts!</p>
+            </div>
             {% endif %}
         </div>
+    {% else %}
+    <div class="empty-state">
+        <p>Blog post not found.</p>
+        <a href="{{ url_for('main.home') }}" class="btn btn-primary">← Back to Home</a>
+    </div>
     {% endif %}
 </div>
 

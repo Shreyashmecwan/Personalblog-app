@@ -4,6 +4,7 @@ WTForms for the Personal Blog Application
 Forms for creating/editing blog content and user profiles.
 """
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, TextAreaField, SubmitField
 from wtforms.validators import DataRequired, Length, Optional
 
@@ -30,6 +31,21 @@ class CreatePostForm(FlaskForm):
             'class': 'form-control'
         }
     )
+    category = StringField(
+        'Category',
+        validators=[
+            DataRequired(message='Category is required'),
+            Length(min=3, max=100, message='Category must be between 3 and 100 characters')
+        ],
+        render_kw={'placeholder': 'e.g., Technology, Travel, Food', 'class': 'form-control'}
+    )
+    image = FileField(
+        'Upload Image',
+        validators=[
+            FileAllowed(['jpg', 'jpeg', 'png', 'gif'], message='Only images are allowed (jpg, jpeg, png, gif)')
+        ],
+        render_kw={'class': 'form-control'}
+    )
     submit = SubmitField('Publish Post', render_kw={'class': 'btn btn-primary'})
 
 
@@ -54,6 +70,21 @@ class UpdatePostForm(FlaskForm):
             'rows': 10,
             'class': 'form-control'
         }
+    )
+    category = StringField(
+        'Category',
+        validators=[
+            DataRequired(message='Category is required'),
+            Length(min=3, max=100, message='Category must be between 3 and 100 characters')
+        ],
+        render_kw={'placeholder': 'e.g., Technology, Travel, Food', 'class': 'form-control'}
+    )
+    image = FileField(
+        'Upload Image',
+        validators=[
+            FileAllowed(['jpg', 'jpeg', 'png', 'gif'], message='Only images are allowed (jpg, jpeg, png, gif)')
+        ],
+        render_kw={'class': 'form-control'}
     )
     submit = SubmitField('Update Post', render_kw={'class': 'btn btn-primary'})
 

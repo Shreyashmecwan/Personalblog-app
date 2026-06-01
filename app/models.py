@@ -55,6 +55,8 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), nullable=False, index=True)
     content = db.Column(db.Text, nullable=False)
+    category = db.Column(db.String(100), nullable=False, index=True, default='General')
+    image_filename = db.Column(db.String(255), nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False, index=True)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, index=True)
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
@@ -65,6 +67,12 @@ class Post(db.Model):
     
     def __repr__(self):
         return f'<Post {self.title}>'
+    
+    def get_image_url(self):
+        """Get image URL - returns uploaded image or default image"""
+        if self.image_filename:
+            return f'uploads/{self.image_filename}'
+        return 'default_img.jpg'
     
     def get_like_count(self):
         """Get total number of likes"""

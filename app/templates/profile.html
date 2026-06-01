@@ -1,39 +1,57 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
-<body>
-    {% block content %}
-    <div class="profile-container">
-   <form class="profile-form" action="/profile" method="post" enctype="multipart/form-data">
-    <h2>User Profile</h2>
+{% block title %}Profile - Personal Blog{% endblock %}
 
-    <div class="form-group">
-        <label for="name">Full Name</label>
-        <input type="text" id="fullname" name="name" placeholder="Enter your full name" value="{{ profile.name if profile else '' }}" required>
+{% block content %}
+<div class="profile-container">
+    <!-- Profile Header -->
+    <div class="profile-header">
+        <div class="profile-avatar">👤</div>
+        <h1 style="margin-bottom: 0.5rem;">{{ current_user.username }}</h1>
+        <p style="color: var(--text-light); margin: 0;">{{ current_user.email }}</p>
+        <p style="color: var(--text-light); margin-top: 0.5rem; font-size: 0.9rem;">Member since {{ current_user.created_at.strftime('%B %Y') }}</p>
     </div>
 
-    <div class="form-group">
-        <label for="email">Email Address</label>
-        <input type="email" id="email" name="email" placeholder="Enter your email" value="{{ profile.email if profile else '' }}" required>
+    <!-- Profile Form -->
+    <div class="profile-form">
+        <h2 style="margin-bottom: 1.5rem;">Edit Profile</h2>
+        
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            
+            <div class="form-group">
+                {{ form.full_name.label }}
+                {{ form.full_name(placeholder="Enter your full name") }}
+            </div>
+
+            <div class="form-group">
+                {{ form.bio.label }}
+                {{ form.bio(placeholder="Tell us about yourself...") }}
+            </div>
+
+            <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                {{ form.submit(class="btn btn-primary", value="Update Profile", style="flex: 1;") }}
+                <a href="{{ url_for('main.home') }}" class="btn btn-secondary" style="flex: 1; text-align: center;">Back to Home</a>
+            </div>
+        </form>
     </div>
 
-    <div class="form-group">
-        <label for="phone">Phone Number</label>
-        <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" pattern="[0-9]{10}" title="Enter a valid 10-digit phone number" value="{{ profile.number if profile else '' }}" required>
+    <!-- Posts Statistics -->
+    <div class="profile-form" style="margin-top: 2rem;">
+        <h2 style="margin-bottom: 1.5rem;">📊 Your Statistics</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
+            <div style="text-align: center; padding: 1rem; background: var(--bg-light); border-radius: var(--radius-md);">
+                <div style="font-size: 1.5rem; font-weight: 700; color: var(--primary-color);">{{ current_user.posts|length }}</div>
+                <div style="color: var(--text-light); font-size: 0.9rem;">Blog Posts</div>
+            </div>
+            <div style="text-align: center; padding: 1rem; background: var(--bg-light); border-radius: var(--radius-md);">
+                <div style="font-size: 1.5rem; font-weight: 700; color: var(--success-color);">
+                    {% set total_likes = current_user.posts|map(attribute='reactions')|selectattr('is_like', 'equalto', True)|list|length %}
+                    {{ total_likes }}
+                </div>
+                <div style="color: var(--text-light); font-size: 0.9rem;">Total Likes</div>
+            </div>
+        </div>
     </div>
-
-    <div class="form-group">
-        <label for="bio">Bio</label>
-        <textarea id="bio" name="bio" rows="3" placeholder="Tell us about yourself">{{ profile.bio if profile else '' }}</textarea>
-    </div>
-
-    <div class="form-group">
-        <label for="profilePic">Profile Picture</label>
-        <input type="file" id="profilePic" name="profilePic" accept="image/*">
-    </div>
-
-
-    <button type="submit">Save Profile</button>
-</form>
 </div>
-    {% endblock %}
-</body>
+{% endblock %}
